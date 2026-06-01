@@ -2,20 +2,14 @@ import 'package:auto_animated/auto_animated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:note_app/features/auth/login/presentation/login_screen.dart';
-import 'package:note_app/features/auth/register/presentation/register_screen.dart';
-import 'package:note_app/features/home/presentation/home_screen.dart';
 import 'package:note_app/helpers/di.dart';
 import 'package:note_app/helpers/helper_methods.dart';
-import 'package:note_app/helpers/navigation_service.dart';
 import 'package:note_app/helpers/register_provider.dart';
 import 'package:note_app/localization/language.dart';
 import 'package:note_app/localization/langueges_controller.dart';
-import 'package:note_app/splash_screen.dart';
+import 'package:note_app/router.dart';
 import 'package:provider/provider.dart';
 
 import 'networks/dio/dio.dart';
@@ -79,13 +73,15 @@ class UtillScreenMobile extends StatelessWidget {
       splitScreenMode: true,
       // ignore: unnecessary_underscores
       builder: (_, __) {
-        return GetMaterialApp(
+        return GetMaterialApp.router(
           showPerformanceOverlay: false,
           fallbackLocale: const Locale("en", "US"),
           locale: controller.selectedLocale.value,
           translations: Apptranslation(),
           debugShowCheckedModeBanner: false,
-          navigatorKey: NavigationService.navigatorKey,
+          routeInformationProvider: router.routeInformationProvider,
+          routeInformationParser: router.routeInformationParser,
+          routerDelegate: router.routerDelegate,
 
           // Proper combined builder for EasyLoading + MediaQuery
           builder: EasyLoading.init(
@@ -93,8 +89,6 @@ class UtillScreenMobile extends StatelessWidget {
             //   return MediaQuery(data: MediaQuery.of(context), child: widget!);
             // },
           ),
-
-          home: SplashScreen(),
         );
       },
     );

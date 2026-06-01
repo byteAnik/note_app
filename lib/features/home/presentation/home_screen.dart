@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:note_app/constants/app_colors.dart';
-import 'package:note_app/features/add_note/presentation/add_note_screen.dart';
 import 'package:note_app/helpers/ui_helpers.dart';
 
 
@@ -40,7 +39,7 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.c1A1A1A,
         onPressed: () {
-          Get.to(() => const AddNoteScreen());
+          context.push('/add-note');
         },
         child: const Icon(
           Icons.add,

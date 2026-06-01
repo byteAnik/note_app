@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/utils.dart';
+import 'package:go_router/go_router.dart';
 import 'package:note_app/common_wigdets/common_button.dart';
 import 'package:note_app/common_wigdets/common_textformflied.dart';
 import 'package:note_app/constants/app_assets/assets_icons.dart';
 import 'package:note_app/constants/app_colors.dart';
 import 'package:note_app/constants/text_font_style.dart';
 import 'package:note_app/constants/validator.dart';
-import 'package:note_app/features/auth/register/presentation/register_screen.dart';
-import 'package:note_app/features/home/presentation/home_screen.dart';
 import 'package:note_app/helpers/ui_helpers.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -136,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: 'Sign in',
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        Get.to(() => HomeScreen());
+                        context.go('/home');
                       }
                     },
                   ),
@@ -153,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Get.to(() => RegisterScreen());
+                          context.push('/register');
                         },
                         child: Text(
                           "Sign up",

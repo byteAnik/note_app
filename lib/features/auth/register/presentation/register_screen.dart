@@ -1,14 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:note_app/common_wigdets/common_button.dart';
 import 'package:note_app/common_wigdets/common_textformflied.dart';
 import 'package:note_app/constants/app_assets/assets_icons.dart';
 import 'package:note_app/constants/app_colors.dart';
 import 'package:note_app/constants/text_font_style.dart';
 import 'package:note_app/constants/validator.dart';
-import 'package:note_app/features/auth/login/presentation/login_screen.dart';
 import 'package:note_app/helpers/ui_helpers.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -56,7 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   UIHelper.verticalSpace(40.h),
 
                   GestureDetector(
-                    onTap: () => Get.back(),
+                    onTap: () => context.pop(),
                     child: Container(
                       height: 40.h,
                       width: 40.w,
@@ -174,7 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     text: 'Create Account',
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        Get.to(() => const LoginScreen());
+                        context.go('/login');
                       }
                     },
                   ),
@@ -221,7 +220,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => Get.to(() => const LoginScreen()),
+                        onTap: () => context.pop(),
                         child: Text(
                           "Sign in",
                           style: TextStyle(

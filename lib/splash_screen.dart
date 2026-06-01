@@ -2,10 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:note_app/constants/app_assets/assets_icons.dart';
 import 'package:note_app/constants/app_colors.dart';
-import 'package:note_app/features/auth/login/presentation/login_screen.dart';
 import 'package:note_app/helpers/ui_helpers.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     Timer(const Duration(seconds: 3), () {
-      Get.offAll(() => const LoginScreen());
+      context.go('/login');
     });
   }
 
