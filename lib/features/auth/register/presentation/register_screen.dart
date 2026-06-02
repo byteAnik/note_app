@@ -8,7 +8,9 @@ import 'package:note_app/constants/app_assets/assets_icons.dart';
 import 'package:note_app/constants/app_colors.dart';
 import 'package:note_app/constants/text_font_style.dart';
 import 'package:note_app/constants/validator.dart';
+import 'package:note_app/core/services/auth_controller.dart';
 import 'package:note_app/helpers/ui_helpers.dart';
+import 'package:get/get.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -87,10 +89,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                   Text(
                     "Start capturing your thoughts today.",
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: AppColors.cA0A0A0,
-                    ),
+                    style: TextStyle(fontSize: 14.sp, color: AppColors.cA0A0A0),
                   ),
 
                   UIHelper.verticalSpace(36.h),
@@ -103,8 +102,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     keyboardType: TextInputType.name,
                     prefixIcon: Padding(
                       padding: EdgeInsets.all(10.w),
-                      child: Image.asset(AssetsIcons.personIcon,
-                          height: 16.h, width: 16.w),
+                      child: Image.asset(
+                        AssetsIcons.personIcon,
+                        height: 16.h,
+                        width: 16.w,
+                      ),
                     ),
                   ),
 
@@ -118,8 +120,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: Padding(
                       padding: EdgeInsets.all(10.w),
-                      child: Image.asset(AssetsIcons.emailIcon,
-                          height: 16.h, width: 16.w),
+                      child: Image.asset(
+                        AssetsIcons.emailIcon,
+                        height: 16.h,
+                        width: 16.w,
+                      ),
                     ),
                   ),
 
@@ -135,37 +140,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     isPassword: true,
                     prefixIcon: Padding(
                       padding: EdgeInsets.all(10.w),
-                      child: Image.asset(AssetsIcons.lockIcon,
-                          height: 16.h, width: 16.w),
+                      child: Image.asset(
+                        AssetsIcons.lockIcon,
+                        height: 16.h,
+                        width: 16.w,
+                      ),
                     ),
                   ),
 
-                  UIHelper.verticalSpace(20.h),
-
-                  CommonTextFormField(
-                    label: 'Confirm Password',
-                    hintText: 'Confirm your password',
-                    controller: confirmPasswordController,
-                    obscureText: true,
-                    isPassword: true,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Please confirm your password';
-                      }
-
-                      if (value.trim() != passwordController.text.trim()) {
-                        return 'Passwords do not match';
-                      }
-
-                      return null;
-                    },
-                    keyboardType: TextInputType.visiblePassword,
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.all(10.w),
-                      child: Image.asset(AssetsIcons.lockIcon,
-                          height: 16.h, width: 16.w),
-                    ),
-                  ),
+                  
 
                   UIHelper.verticalSpace(36.h),
 
@@ -173,7 +156,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     text: 'Create Account',
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        context.go('/login');
+                        final authController = Get.put(AuthController());
+                        authController.register(
+                          nameController.text.trim(),
+                          emailController.text.trim(),
+                          passwordController.text.trim(),
+                          context,
+                        );
                       }
                     },
                   ),
@@ -183,16 +172,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
-                      style: TextFontStyle
-                          .textStylec24cAsap500c181B25
-                          .copyWith(
-                            fontSize: 14.sp,
-                            color: AppColors.c525866,
-                          ),
+                      style: TextFontStyle.textStylec24cAsap500c181B25.copyWith(
+                        fontSize: 14.sp,
+                        color: AppColors.c525866,
+                      ),
                       children: [
                         const TextSpan(
-                          text:
-                              'By creating an account you agree to our ',
+                          text: 'By creating an account you agree to our ',
                         ),
                         TextSpan(
                           text: 'Terms of\nService',

@@ -8,6 +8,8 @@ import 'package:note_app/constants/app_colors.dart';
 import 'package:note_app/constants/text_font_style.dart';
 import 'package:note_app/constants/validator.dart';
 import 'package:note_app/helpers/ui_helpers.dart';
+import 'package:note_app/core/services/auth_controller.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -133,7 +135,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: 'Sign in',
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        context.go('/home');
+                        final authController = Get.put(AuthController());
+                        authController.login(
+                          emailController.text.trim(),
+                          passwordController.text.trim(),
+                          context,
+                        );
                       }
                     },
                   ),

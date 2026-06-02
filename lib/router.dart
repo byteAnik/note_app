@@ -4,7 +4,7 @@ import 'package:note_app/features/auth/login/presentation/login_screen.dart';
 import 'package:note_app/features/auth/register/presentation/register_screen.dart';
 import 'package:note_app/features/home/presentation/home_screen.dart';
 import 'package:note_app/helpers/navigation_service.dart';
-import 'package:note_app/splash_screen.dart';
+import 'package:note_app/loading_screen.dart';
 
 final GoRouter router = GoRouter(
   navigatorKey: NavigationService.navigatorKey,
@@ -12,7 +12,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const SplashScreen(),
+      builder: (context, state) => const Loading(),
     ),
     GoRoute(
       path: '/login',

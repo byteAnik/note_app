@@ -1,11 +1,9 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:note_app/constants/app_constants.dart';
-import 'package:note_app/features/home/presentation/home_screen.dart';
-import 'package:note_app/helpers/di.dart';
-import 'package:note_app/networks/dio/dio.dart';
+import 'package:go_router/go_router.dart';
+import 'package:note_app/core/services/auth_controller.dart';
 import 'package:note_app/splash_screen.dart';
+import 'package:get/get.dart';
 
 final class Loading extends StatefulWidget {
   const Loading({super.key});
@@ -15,8 +13,6 @@ final class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
-  bool _isLoading = true;
-
   @override
   void initState() {
     super.initState();
@@ -24,46 +20,24 @@ class _LoadingState extends State<Loading> {
   }
 
   Future<void> loadInitialData() async {
-    final accessToken = appData.read(kKeyAccessToken);
-    final isLoggedIn = appData.read(kKeyIsLogin);
-
-    log("----token--$accessToken");
-    log("----kLoggedIn--$isLoggedIn");
-
     // Splash delay
     await Future.delayed(Durations.extralong2);
 
-    // Update Dio token
-    if (accessToken != null && accessToken.toString().isNotEmpty) {
-      DioSingleton.instance.update(accessToken);
-    }
+    if (!mounted) return;
 
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-      });
+    // Check Firebase Auth state
+    final authController = Get.put(AuthController());
+    final isLoggedIn = authController.currentUser != null;
+
+    if (isLoggedIn) {
+      context.go('/home');
+    } else {
+      context.go('/login');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    log("============ Loading screen build method called ================");
-    log("============ my phone: ${appData.read(kPhone)} ================");
-
-    if (_isLoading) {
-      return const SplashScreen();
-    }
-
-    /// Check login state
-    final isLoggedIn = appData.read(kKeyIsLogin) == true;
-    final accessToken = appData.read(kKeyAccessToken);
-
-    if (isLoggedIn &&
-        accessToken != null &&
-        accessToken.toString().isNotEmpty) {
-      return const HomeScreen();
-    }
-
     return const SplashScreen();
   }
 }
