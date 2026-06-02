@@ -55,6 +55,8 @@ dependencies:
   cached_network_image: ^3.4.1
   linear_progress_bar: ^1.2.0
   flutter_easyloading: ^3.0.5
+  firebase_core: ^4.2.1
+  cloud_firestore: ^6.1.0
   image_picker: ^1.2.0
   flutter_switch: ^0.3.2
   easy_localization: ^3.0.8

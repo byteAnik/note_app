@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:note_app/common_wigdets/common_button.dart';
 import 'package:note_app/common_wigdets/common_textformflied.dart';
 import 'package:note_app/constants/app_colors.dart';
+import 'package:note_app/features/notes/data/note_repository.dart';
+import 'package:note_app/helpers/toast.dart';
 import 'package:note_app/helpers/ui_helpers.dart';
 
 class AddNoteScreen extends StatefulWidget {
@@ -18,6 +20,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -26,11 +29,30 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     super.dispose();
   }
 
-  void saveNote() {
-    if (_formKey.currentState!.validate()) {
-      // TODO: এখানে API / Firebase save logic দিবে
+  Future<void> saveNote() async {
+    if (!_formKey.currentState!.validate() || isLoading) return;
 
-      Get.back(); // save করার পর Home এ ফিরে যাবে
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      await NoteRepository.instance.addNote(
+        title: titleController.text,
+        description: descriptionController.text,
+      );
+
+      if (!mounted) return;
+      ToastUtil.showShortToast('Note saved successfully');
+      context.go('/home'); // হোম স্ক্রিনে নিয়ে যাবে
+    } catch (error) {
+      ToastUtil.showLongToast(error.toString());
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -43,7 +65,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         backgroundColor: AppColors.cF1F4F8,
         elevation: 0,
         leading: IconButton(
-          onPressed: () => Get.back(),
+          onPressed: () => context.pop(),
           icon: const Icon(Icons.arrow_back_ios_new),
           color: AppColors.c222222,
         ),
@@ -97,12 +119,9 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 ),
                 UIHelper.verticalSpace(20.h),
                 CommonButton(
-                  text: 'Save Note',
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      
-                    }
-                  },
+                  text: isLoading ? 'Saving...' : 'Save Note',
+                  isDisabled: isLoading,
+                  onPressed: saveNote,
                 ),
 
                 UIHelper.verticalSpace(20.h),
